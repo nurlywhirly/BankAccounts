@@ -9,15 +9,15 @@ module Bank
           raise ArgumentError
         end
       @owner_info = Bank::AccountHolder.new(name)
-      puts "Thank you for creating a new account with us. Your ID number is #{ owner_info.id } and your balance is $#{ @balance }"
+      puts "Thank you, #{ owner_info.name } for creating a new account with us. Your ID number is #{ owner_info.id } and your balance is $#{ @balance }"
     end
 
     def withdraw(amount)
-      @balance =  @balance - amount
-      if @balance > 0.01
-        return @balance
+      new_balance =  @balance - amount
+      if new_balance > 0.01
+        return @balance = new_balance
       else
-        raise Exception.new("You do not have enough funds to withdraw #{ amount }. Your balance is #{ @balance }.")
+        raise Exception.new("You do not have enough funds to withdraw #{ amount }. Your balance is $#{ @balance }.")
         return @balance
       end
     end
@@ -29,7 +29,7 @@ module Bank
     end
 
     def balance
-      puts "Your balance is #{ @balance }"
+      puts "Your balance is $#{ @balance }"
       return @balance
     end
 
