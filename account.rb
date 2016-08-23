@@ -29,6 +29,7 @@ module Bank
     def deposit(amount)
       @balance = @balance + amount
       puts "Your new balance is $#{ @balance }."
+      return @balance
     end
 
     def balance
