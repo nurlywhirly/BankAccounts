@@ -1,5 +1,5 @@
 module Bank
-  class AccountHolder
+  class Owner
     attr_accessor :name, :id
 
     def initialize(name)
@@ -14,6 +14,6 @@ module Bank
     def name
       return @name
     end
-    
+
   end
 end
