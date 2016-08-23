@@ -32,6 +32,7 @@ module Bank
     end
 
     def balance
+      puts "Your balance is #{ @balance }"
       return @balance
     end
 
