@@ -23,7 +23,7 @@ module Bank
     end
 
     def self.find(id)
-      all_accounts = self.all
+      all_accounts = all
 
       if all_accounts.key?(id)
         return all_accounts[id]
