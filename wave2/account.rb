@@ -7,12 +7,10 @@ module Bank
     def initialize(id,balance,open_date)
       @id = id
       @balance = balance / 100
-      @minimum_amount = 0.01
-      if @balance < @minimum_amount
-        raise ArgumentError,"You cannot create an account without money."
-      end
+        if @balance < 0.01
+          raise ArgumentError
+        end
       @open_date = open_date
-      @withdrawal_fee = 0
     end
 
     def self.all
@@ -34,8 +32,8 @@ module Bank
     end
 
     def withdraw(amount)
-      new_balance =  @balance - amount - @withdrawal_fee
-      if new_balance > @minimum_amount
+      new_balance =  @balance - amount
+      if new_balance > 0.01
         @balance = new_balance
         puts "You have withdrawn $#{ amount }. Your new balance is $#{ @balance }."
         return @balance
@@ -58,6 +56,6 @@ module Bank
 
   end
 end
-#
-# account = Bank::Account.find("1212")
-# puts "last puts is here: #{account.id} $#{account.balance}"        # Pull info for account 1212
+
+account = Bank::Account.find("1212")
+puts "last puts is here: #{account.id} $#{account.balance}"        # Pull info for account 1212
