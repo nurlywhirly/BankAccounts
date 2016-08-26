@@ -3,21 +3,16 @@ require_relative 'account.rb'
 
 module Bank
   class CheckingAccount < Account
-    attr_accessor :initialize, :withdraw, :deposit, :balance, :id, :withdraw_using_check, :check_count, :withdrawal_fee
+    attr_accessor :initialize, :withdraw, :deposit, :balance, :id, :withdraw_using_check
 
-    def initialize(id,balance,open_date)
-      super
+    MINIMUM_AMOUNT = 0.01
+    WITHDRAWAL_FEE = 1
+
+    def initialize(id,balance)
       @check_count = 1
+      @max_free_checks = 3
       @check_withdrawal_fee = 2
-      @withdrawal_fee = 1
       @check_minimum_balance = -10
-    end
-
-    def self.all
-      super
-    end
-
-    def self.find(id)
       super
     end
 
@@ -26,7 +21,7 @@ module Bank
     end
 
     def withdraw_using_check(amount)
-      if @check_count <= 3
+      if @check_count <= @max_free_checks
         new_balance =  @balance - amount
       else
         new_balance = @balance - amount - @check_withdrawal_fee
@@ -59,7 +54,7 @@ module Bank
   end
 end
 
-account = Bank::CheckingAccount.new(123,2000,"today")
+account = Bank::CheckingAccount.new(123,500,"today")
 
 account.withdraw_using_check(1)
 account.withdraw_using_check(1)

@@ -1,41 +1,33 @@
+
 require 'csv'
 
 module Bank
   class Account
-    attr_accessor :initialize, :withdraw, :deposit, :balance, :id
+    attr_accessor :initialize, :withdraw, :deposit, :balance, :id, :minimum_amount, :initial_deposit_good
 
-    def initialize(id,balance,open_date)
-      @id = id
-      @balance = balance / 100
-      @minimum_amount = 0.01
-      if @balance < @minimum_amount
-        raise ArgumentError,"You cannot create an account without money."
-      end
-      @open_date = open_date
-      @withdrawal_fee = 0
-    end
+    MINIMUM_AMOUNT = 0.01
+    WITHDRAWAL_FEE = 0
 
-    def self.all
-      all_accounts = {}
-      CSV.read("/Users/nurl/ada/homework/BankAccounts/support/accounts.csv").each do |line|
-        all_accounts[line[0]] = self.new(line[0],(line[1].to_f),line[2])
-      end
-      return all_accounts
-    end
-
-    def self.find(id)
-      all_accounts = self.all
-
-      if all_accounts.key?(id)
-        return all_accounts[id]
+    def initialize(id,balance)
+      @balance = balance
+      if initial_deposit_good?
+        @id = id
       else
-        raise Exception.new("We do not have an account with that ID number.")
+        raise ArgumentError,"You need at least $#{ self.class::MINIMUM_AMOUNT } to open this kind of account."
+      end
+    end
+
+    def initial_deposit_good?
+      if @balance > self.class::MINIMUM_AMOUNT
+        return true
+      else
+        return false
       end
     end
 
     def withdraw(amount)
-      new_balance =  @balance - amount - @withdrawal_fee
-      if new_balance > @minimum_amount
+      new_balance =  @balance - amount - self.class::WITHDRAWAL_FEE
+      if new_balance > self.class::MINIMUM_AMOUNT
         @balance = new_balance
         puts "You have withdrawn $#{ amount }. Your new balance is $#{ @balance }."
         return @balance
@@ -59,5 +51,5 @@ module Bank
   end
 end
 #
-# account = Bank::Account.find("1212")
+# account = Bank::Account.new(1234,1)
 # puts "last puts is here: #{account.id} $#{account.balance}"        # Pull info for account 1212
